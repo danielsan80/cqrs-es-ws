@@ -43,18 +43,18 @@ services:
     shop.product.repository:
         class: Shop\Product\Repository
         arguments: ['@broadway.event_store.dbal', '@broadway.event_handling.event_bus']
-#
-#    shop.product.read_model.projector:
-#        class: Shop\Product\Projector\ProductProjector
-#        arguments: ['@shop.product.read_model.repository']
-#        tags:
-#            - { name: broadway.domain.event_listener }
-#
-#    shop.product.read_model.repository:
-#        class: Broadway\ReadModel\ElasticSearch\ElasticSearchRepository
-#        arguments:
-#           - "@broadway.elasticsearch.client"
-#           - "@broadway.simple_interface_serializer"
-#           - "%read_model_index_products%"
-#           - Shop\Product\ReadModel\Product
-#        public: true
+
+    shop.product.read_model.projector:
+        class: Shop\Product\Projector\ProductProjector
+        arguments: ['@shop.product.read_model.repository']
+        tags:
+            - { name: broadway.domain.event_listener }
+
+    shop.product.read_model.repository:
+      class: Broadway\ReadModel\ElasticSearch\ElasticSearchRepository
+      arguments:
+          - "@broadway.elasticsearch.client"
+          - "@broadway.simple_interface_serializer"
+          - "%read_model_index_products%"
+          - Shop\Product\ReadModel\Product
+      public: true
