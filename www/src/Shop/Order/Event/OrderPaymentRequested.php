@@ -6,33 +6,20 @@ namespace Shop\Order\Event;
 use Broadway\Serializer\Serializable;
 use Shop\Order\ValueObject\OrderId;
 
-class OrderCreated implements Serializable
+class OrderPaymentRequested implements Serializable
 {
     private $orderId;
-    private $createdAt;
+    private $requestedAt;
     /**
      * @var
      */
     private $totalCost;
-    /**
-     * @var array
-     */
-    private $items;
 
-    public function __construct(OrderId $orderId, $totalCost, array $items, \DateTimeImmutable $createdAt)
+    public function __construct(OrderId $orderId, $totalCost, \DateTimeImmutable $requestedAt)
     {
         $this->orderId = $orderId;
-        $this->createdAt = $createdAt;
+        $this->requestedAt = $requestedAt;
         $this->totalCost = $totalCost;
-        $this->items = $items;
-    }
-
-    /**
-     * @return OrderId
-     */
-    public function getOrderId(): OrderId
-    {
-        return $this->orderId;
     }
 
     /**
@@ -43,8 +30,7 @@ class OrderCreated implements Serializable
         return new self(
             new OrderId($data['orderId']),
             $data['totalCost'],
-            $data['items'],
-            new \DateTimeImmutable($data['createdAt'])
+            new \DateTimeImmutable($data['requestedAt'])
         );
     }
 
@@ -56,8 +42,7 @@ class OrderCreated implements Serializable
         return [
             'orderId'   => (string)$this->orderId,
             'totalCost' => $this->totalCost,
-            'items' => $this->items,
-            'createdAt' => $this->createdAt->format('Y-m-d\TH:i:s.uP')
+            'requestedAt' => $this->requestedAt->format('Y-m-d\TH:i:s.uP')
         ];
     }
 }

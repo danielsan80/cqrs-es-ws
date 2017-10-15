@@ -6,25 +6,19 @@ namespace Shop\Order\Event;
 use Broadway\Serializer\Serializable;
 use Shop\Order\ValueObject\OrderId;
 
-class OrderCreated implements Serializable
+class OrderConfirmed implements Serializable
 {
     private $orderId;
-    private $createdAt;
+    private $confirmedAt;
     /**
      * @var
      */
     private $totalCost;
-    /**
-     * @var array
-     */
-    private $items;
 
-    public function __construct(OrderId $orderId, $totalCost, array $items, \DateTimeImmutable $createdAt)
+    public function __construct(OrderId $orderId, \DateTimeImmutable $confirmedAt)
     {
         $this->orderId = $orderId;
-        $this->createdAt = $createdAt;
-        $this->totalCost = $totalCost;
-        $this->items = $items;
+        $this->confirmedAt = $confirmedAt;
     }
 
     /**
@@ -36,15 +30,29 @@ class OrderCreated implements Serializable
     }
 
     /**
+     * @return \DateTimeImmutable
+     */
+    public function getConfirmedAt(): \DateTimeImmutable
+    {
+        return $this->confirmedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTotalCost()
+    {
+        return $this->totalCost;
+    }
+
+    /**
      * @return mixed The object instance
      */
     public static function deserialize(array $data)
     {
         return new self(
             new OrderId($data['orderId']),
-            $data['totalCost'],
-            $data['items'],
-            new \DateTimeImmutable($data['createdAt'])
+            new \DateTimeImmutable($data['confirmedAt'])
         );
     }
 
@@ -55,9 +63,7 @@ class OrderCreated implements Serializable
     {
         return [
             'orderId'   => (string)$this->orderId,
-            'totalCost' => $this->totalCost,
-            'items' => $this->items,
-            'createdAt' => $this->createdAt->format('Y-m-d\TH:i:s.uP')
+            'confirmedAt' => $this->confirmedAt->format('Y-m-d\TH:i:s.uP')
         ];
     }
 }
