@@ -58,7 +58,7 @@ Per lanciare la build con Docker
 
 ```
 cd PATH/ROOT/DEL/PROGETTO
-docker-compose exec php ./idephix.phar test
+docker-compose exec php ./idephix.phar build
 ```
 
 Utilizzare le api dell'applicazione con Vagrant
